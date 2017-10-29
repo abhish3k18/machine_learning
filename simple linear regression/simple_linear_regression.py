@@ -11,7 +11,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.cross_validation import train_test_split
 from sklearn.linear_model import LinearRegression
-
+    
 def data_preparation(file_name):
     global X, Y, x_test, x_train, y_test, y_train
     data = pd.read_csv('Salary_Data.csv') #LOAD DATASET
