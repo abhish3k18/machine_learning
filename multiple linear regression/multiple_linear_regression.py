@@ -40,7 +40,7 @@ def train_model():
     
 def predict(regressor):
     global y_pred
-    y_pred = multiple_linear_regressor(x_test)
+    y_pred = multiple_linear_regressor.predict(x_test)
 
 def backward_elimination():
     #PERFORMING BACKWARD ELIMINATION
