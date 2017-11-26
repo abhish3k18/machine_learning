@@ -21,7 +21,7 @@ def load_dataset():
 def create_train_regressor():
     global regressor
     from sklearn.ensemble import RandomForestRegressor
-    regressor = RandomForestRegressor()
+    regressor = RandomForestRegressor(n_estimators=100)
     regressor.fit(X,Y)
     
 def predict(value):
@@ -32,7 +32,7 @@ def plot_graph():
     plt.scatter(X, Y, color = 'red')
     x_grid = np.arange(min(X), max(X), 0.01)
     x_grid = x_grid.reshape(len(x_grid), 1)
-    plt.plot(x_grid, regressor.predict(x_grid), color = 'blue')
+    plt.plot(x_grid, regressor.predict(x_grid), color = 'black')
     plt.show()
     
 load_dataset()
