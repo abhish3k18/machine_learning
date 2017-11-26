@@ -8,7 +8,7 @@ Created on Sun Nov 26 11:07:26 2017
 
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as pyplot
+import matplotlib.pyplot as plt
 
 def load_dataset():
     global dataset, X, Y
@@ -37,7 +37,18 @@ def predict_values(value):
     pred = sc_y.inverse_transform(regressor.predict(value))
     print(pred)
     
+def plot_graph():
+    plt.scatter(X, Y, color = 'blue')
+    x_grid = np.arange(min(X), max(X), 0.01)
+    x_grid = x_grid.reshape(len(x_grid), 1)
+    plt.plot(x_grid, regressor.predict(x_grid), color = 'red')
+    plt.title('Truth or Bluff (SVR)')
+    plt.xlabel('Position level')
+    plt.ylabel('Salary')
+    #plt.show()
+    
 load_dataset()
 scale_data()
 create_train_model()
 predict_values(6.5)
+plot_graph()
