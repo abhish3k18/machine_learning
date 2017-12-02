@@ -55,7 +55,7 @@ def plot_graph():
     for i,j in enumerate(np.unique(y_set)):
         plt.scatter(x_set[y_set==j,0], x_set[y_set==j,1], 
                     c=ListedColormap(('red','green'))(i), label=j)
-    plt.title("KNN Regression")
+    plt.title("KNN classification")
     plt.xlabel("Age")
     plt.ylabel("Salary")
     plt.legend()
