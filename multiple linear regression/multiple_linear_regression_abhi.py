@@ -9,13 +9,14 @@ Created on Sun Oct 29 12:11:36 2017
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import pickle
 
 def data_preparation(file_name):
     global X, Y, dataset
     #dataset = pd.read_csv(file_name)
     dataset = pd.read_excel(file_name)
-    print(dataset)
     X = dataset.iloc[:,1:].values
+    X = X[:,:-1]
     Y = dataset.iloc[:,0].values
     '''
     #ENCODING STATE VALUES
@@ -31,7 +32,7 @@ def data_split():
     global x_train,x_test, y_train, y_test
     #TRAIN TEST SPLIT
     from sklearn.model_selection import train_test_split
-    x_train, x_test, y_train, y_test = train_test_split(X, Y, test_size = 0.25)
+    x_train, x_test, y_train, y_test = train_test_split(X, Y, test_size = 0.1, random_state=2)
     
 def train_model():
     global multiple_linear_regressor
@@ -41,20 +42,33 @@ def train_model():
     multiple_linear_regressor.fit(x_train, y_train)
     return multiple_linear_regressor
     
+def save_Regressor(regressor):
+	with open('mL_Regressor.pickle','wb') as f:
+		pickle.dump(regressor,f)
+
+def load_regressor(pickle_Name):
+	loaded_pickle=open(pickle_Name,'rb')		
+	regressor=pickle.load(loaded_pickle)
+	return regressor
+
 def predict(regressor):
     global y_pred
-    y_pred = multiple_linear_regressor.predict(x_test)
+    y_pred = regressor.predict(x_test)
     print(y_pred)
     print(y_test)
 
 def backward_elimination():
     #PERFORMING BACKWARD ELIMINATION
     import statsmodels.formula.api as sm
-    x_new = np.append(arr = np.ones((10,1)), values = X[:,[0,1]], axis=1)
+    x_new = np.append(arr = np.ones((10,1)), values = X, axis=1)
+    print(x_new)
     bE_regressor = sm.OLS(endog = Y, exog = x_new).fit()
     print(bE_regressor.rsquared)
     print(bE_regressor.summary())
-    #print(X)
+    '''global bE_regressor
+    from sklearn.linear_model import LinearRegression
+    bE_regressor= LinearRegression()
+    bE_regressor.fit(x_new, y_train)'''
     #CHECK p-value FOR EACH VARIABLE AND REMOVE ACCORDINGLY
     return bE_regressor
     
@@ -69,7 +83,9 @@ X3 = total promotional costs/millions
 X4 = total book sales/millions'''
 
 data_split()
-normal_regressor = train_model()
-backward_elimination_regressor = backward_elimination()
+#normal_regressor = train_model()
+#save_Regressor(normal_regressor)
+normal_regressor=load_regressor('mL_Regressor.pickle')
+#backward_elimination()
 predict(normal_regressor)
-predict(backward_elimination_regressor)
+
